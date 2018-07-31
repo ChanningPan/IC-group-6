@@ -1,0 +1,4 @@
+{
+    "board": "arduino:avr:atmegang",
+    "configuration": "cpu=atmega168"
+}
