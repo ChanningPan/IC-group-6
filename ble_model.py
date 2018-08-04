@@ -19,7 +19,7 @@ import serial
 from bluepy import btle
 
 
-class Ardui_BLE_controller(object):
+class ble_controller(object):
     '''BLE控制'''
 
     def __init__(self):
