@@ -134,21 +134,34 @@ class Ardui_BLE_controller(object):
         # data = data.decode('utf8')
         return data
 
-    def charac_write(self,name,data):
+    def _charac_write(self,name,data):
+        # 写入 方法
         if not self.servo_charac[name]:
             print('Dest servo %s doesn\'t exist' % name)
             return False
         try:
-            if type(name) == str:
-                in_buf = bytes(name,'utf8')
-            else:
-                in_buf = bytes(name)
+            # 字节数组,吗的真蠢
+            buff = bytearray([data])
             # self.servo_charac[name].write(data.encode('utf8'))
-            self.servo_charac[name].write(in_buf)
+            self.servo_charac[name].write(buff)
         except Exception as e:
             print('Write data failed\n',e)
             return False
         return True
+
+    def charac_write(self,name,data,withcheck = True):
+        # 写入--检查 方法
+        if not self._charac_write(name,data):
+            return False
+        if not withcheck:
+            return True
+        now = self.charac_read(name)
+        if not now == data:
+            print('Wite data %s to servo %s failed' % (data,name))
+            return False
+        else:
+            print('Data %s already been writen to servo %s' % (data,name))
+            return True
 
     def read_all(self):
         for key in self.servo_charac:
@@ -172,10 +185,8 @@ def main():
     if not controller.get_service():
         os._exit(1)
     controller.read_all()
-    controller.charac_write('B',180)
+    controller.charac_write('B',15)
     controller.dis_connect()
-
-    
 
 if __name__ == '__main__':
     main()
