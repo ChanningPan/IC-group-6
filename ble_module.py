@@ -24,7 +24,7 @@ class ble_controller(object):
 
     def __init__(self):
 
-        self.ble_addr = ''
+        self.ble_addr = '98:4f:ee:10:7a:4f'
         self.ble_name = 'Group6'
         self.service_uuid = '47452000-0f63-5b27-9122-728099603712'
         self.ble_conn = ''
@@ -44,6 +44,11 @@ class ble_controller(object):
         # servo characteristic object
         self.servo_charac = {'A': '', 'B': '', 'C': '',
                              'D': '', 'E': '', 'F': '', 'G': '', 'reset': ''}
+
+        # servo usage
+        self.servo_usage = {'A': 'elbow', 'B': 'shoulder',
+                            'C': 'wrist X', 'D': 'wrist Y',
+                            'E': 'wrist Z', 'F': 'base', 'G': 'craw'}
 
     def find_ardui(self):
         '''找到我们的arduino设备'''
@@ -70,7 +75,6 @@ class ble_controller(object):
         charac_count = 0
 
         print('---------------service---------------')
-        self.ble_addr = '98:4f:ee:10:7a:4f'
         if not self.ble_addr:
             print('No ble address been recorded.')
             return False
@@ -136,7 +140,7 @@ class ble_controller(object):
             return False
         data = self.servo_charac[name].read()
         # data = data.decode('utf8')
-        return data
+        return data[0]
 
     def _charac_write(self, name, data):
         # 写入 方法
@@ -164,7 +168,8 @@ class ble_controller(object):
             print('Wite data %s to servo %s failed' % (data, name))
             return False
         else:
-            print('Data %s already been writen to servo %s' % (data, name))
+            print('Data %s has successfully writen to servo %s (%s)' %
+                  (data, name, self.servo_usage[name]))
             return True
 
     def read_all(self):
@@ -189,8 +194,8 @@ def main():
         os._exit(1)
     if not controller.get_service():
         os._exit(1)
-    controller.read_all()
     controller.charac_write('B', 15)
+    controller.read_all()
     controller.dis_connect()
 
 
