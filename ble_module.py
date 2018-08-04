@@ -70,7 +70,7 @@ class ble_controller(object):
             return False
 
     def get_service(self):
-        '''定位所有的service和characristic'''
+        '''创建Peripheral, 定位所有的service和characristic'''
         check_val = 0
         charac_count = 0
 
