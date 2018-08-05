@@ -186,6 +186,10 @@ class ble_controller(object):
         self.ble_conn.disconnect()
         return True
 
+    @staticmethod
+    def map_num(x,in_min,in_max,out_min,out_max):
+        pass
+
 
 def main():
     # for test
