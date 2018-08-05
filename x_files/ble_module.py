@@ -1,7 +1,7 @@
 '''
 python BLE 及串口功能
-date:Tue Jul 31 18:45:13 CST 2018
-Author: LaoYuan
+创建时间:Tue Jul 31 18:45:13 CST 2018
+Author: Zhang Tingyuan
 Notes:
   a.servo对应的机械臂关节:
     servo A -- elbow

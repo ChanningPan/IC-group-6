@@ -65,6 +65,7 @@ void myservosetup()  //set up the servo motors
    
    myspeed=500;
    for(pos=0;pos<=myspeed;pos+=1)
+   // 缓慢回到初始值
    {
     myservoA.write(int(map(pos,1,myspeed,sea,ELBOW_DEFAULT)));
     myservoB.write(int(map(pos,1,myspeed,seb,SHOULDER_DEFAULT)));
