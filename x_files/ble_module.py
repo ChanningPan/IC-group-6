@@ -11,6 +11,27 @@ Notes:
     servo E -- wrist Z
     servo F -- base
     servo G -- craw
+  b.servo 可输入的min max 设定
+    CRAW_MIN 0 //open 
+    CRAW_MAX 58 //close
+    ELBOW_MIN   0
+    ELBOW_MAX 140
+    SHOULDER_MIN 0
+    SHOULDER_MAX 165
+    WRIST_X_MIN 0
+    WRIST_X_MAX 180
+    WRIST_Y_MIN 0
+    WRIST_Y_MAX 90
+    WRIST_Z_MIN 0
+    WRIST_Z_MAX 180
+    BASE_MIN 0
+    BASE_MAX 180
+    ELBOW_DEFAULT 60
+    SHOULDER_DEFAULT 100
+    WRIST_X_DEFAULT 80
+    WRIST_Y_DEFAULT 90
+    WRIST_Z_DEFAULT 66
+    BASE_DEFAULT 90
 '''
 
 import os
@@ -180,7 +201,7 @@ class ble_controller(object):
             if not data:
                 pass
             else:
-                print('servo %s values %d' % (key, data[0]))
+                print('servo %s values %d' % (key, data))
 
     def dis_connect(self):
         self.ble_conn.disconnect()
