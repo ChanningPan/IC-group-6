@@ -7,10 +7,21 @@ import cv2
 import os
 import matplotlib
 
+cam_key_word = 'C270'
+
 def show_webcam(mirror=False):
-    cam = cv2.VideoCapture(1)
-    while not cam.isOpened():
-        cam.open('/dev/bus/usb/001/005')
+    pipe = os.popen('lsusb')
+    text = pipe.read()
+    if cam_key_word in text:
+        text = text.split('\n')
+        for line in text:
+            if cam_key_word in line:
+                break
+        text = line.split(' ')
+        cam_path = '/dev/bus/usb/' + text[1] + '/' + text[3][:-1]
+    cam = cv2.VideoCapture(0)
+    # while not cam.isOpened():
+    #     cam.open(cam_path)
     while True:
         ret, img = cam.read()
         if mirror: 

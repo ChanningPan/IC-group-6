@@ -1,7 +1,0 @@
-'''
-opencv 
-'''
-
-import demo
-
-func = 

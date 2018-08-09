@@ -66,7 +66,7 @@ class Arm():
                 temp = (a - m) ** 2 + (b - n) ** 2
                 d2 = half_pi - d1 - acos((self.r2 ** 2 + temp - self.r3 ** 2) / (2 * self.r2 * sqrt(temp))) - atan(
                     (b - n) / (a - m))
-                if not -half_pi < d2 < half_pi:
+                if not half_pi < d2 < pi:
                     continue
                 d3 = pi - acos((self.r2 ** 2 + self.r3 ** 2 -
                                 temp) / (2 * self.r2 * self.r3))
@@ -126,14 +126,16 @@ class Arm():
 
     def goto(self, x, y, z):
         self.rad_pos = self.get_radians(x, y, z)
-        self.rad_pos[3] = half_pi - self.rad_pos[1] - self.rad_pos[2] - self.rad_pos[3]
-        self.rad_pos[2] = half_pi - self.rad_pos[1] - self.rad_pos[2]
         self.rad_pos[1] = half_pi - self.rad_pos[1]
+        self.rad_pos[2] = self.rad_pos[1] - self.rad_pos[2]
+        # self.rad_pos[3] = self.rad_pos[2] - self.rad_pos[3] + half_pi
+        self.rad_pos[3] = half_pi - self.rad_pos[3]
 
         self.rad_pos[0] = self.rad_pos[0] * 180 / pi
         self.rad_pos[1] = self.rad_pos[1] * 180 / pi
         self.rad_pos[2] = self.rad_pos[2] * 180 / pi
-        self.rad_pos[3] = self.rad_pos[3] * 180 / pi + 90
+        self.rad_pos[3] = self.rad_pos[3] * 180 / pi
+
         print(self.rad_pos)
         return self.rad_pos
         # self.position = np.concatenate((self.cov_degs(self.rads_to_degs(
