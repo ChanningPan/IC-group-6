@@ -36,7 +36,7 @@ class Arm():
         if d2 < 0 or d2 > half_pi:
             print("d2 out of range, d2 = ",d2)
             return False
-            
+
         return [d0,d1,d2]
     
     def solve_two(self,a,b):
@@ -54,15 +54,18 @@ class Arm():
 
     def goto(self, x, y, z):
         self.rad_pos = self.get_radians(x, y, z)
-        print(self.rad_pos)
+        if self.rad_pos:
+            print(self.rad_pos)
 
-        self.rad_pos[0] = self.rad_pos[0] * 180 / pi
-        self.rad_pos[1] = self.rad_pos[1] * 180 / pi
-        self.rad_pos[2] = self.rad_pos[2] * 180 / pi
+            self.rad_pos[0] = self.rad_pos[0] * 180 / pi
+            self.rad_pos[1] = self.rad_pos[1] * 180 / pi
+            self.rad_pos[2] = self.rad_pos[2] * 180 / pi
 
-        print(self.rad_pos)
-        return self.rad_pos
+            print(self.rad_pos)
+            return self.rad_pos
+        else:
+            return False
 
 if __name__ == '__main__':
     arm = Arm(130,110)
-    arm.goto(0,0,100)
+    arm.goto(0,70,0)
