@@ -1,0 +1,21 @@
+
+  long toa = (byte)BLE_ServoA.value();
+  sea=myservoA.read();
+  if(toa > sea){
+    while (1){
+      myservoA.write(sea);   
+      sea += 1;
+      if (sea >= toa) {
+        break;
+      }
+    }
+  if(toa < sea){
+    while (1){
+      myservoA.write(sea);   
+      sea -= 1;
+      if (sea <= toa) {
+        break;
+      }
+    }
+   }
+  }

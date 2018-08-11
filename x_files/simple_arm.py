@@ -58,8 +58,8 @@ class Arm():
             print(self.rad_pos)
 
             self.rad_pos[0] = self.rad_pos[0] * 180 / pi
-            self.rad_pos[1] = self.rad_pos[1] * 180 / pi
-            self.rad_pos[2] = self.rad_pos[2] * 180 / pi
+            self.rad_pos[1] = self.rad_pos[1] * 180 / pi - 48
+            self.rad_pos[2] = self.rad_pos[2] * 180 / pi - 25
 
             print(self.rad_pos)
             return self.rad_pos

@@ -10,6 +10,7 @@ import os
 import ble_module
 import simple_arm
 import threading
+import time
 
 class Arm(object):
 
@@ -21,7 +22,7 @@ class Arm(object):
         pipe_out = usb_pipe.read()
         pipe_out = pipe_out.split('\n')
 
-        self.arm_model = simple_arm.Arm(130, 130, 120, simple_arm.Arm.minimum_change)
+        self.arm_model = simple_arm.Arm(130, 130)
         self.contr = ble_module.ble_controller()
         self.contr.get_service()
 
@@ -30,11 +31,19 @@ class Arm(object):
         self.contr.charac_write('F',int(rads[0])) # base
         self.contr.charac_write('B',int(rads[1])) # shoulder
         self.contr.charac_write('A',int(rads[2])) # elbow
-        self.contr.charac_write('D',int(rads[3])) # wrist Y
+        # self.contr.charac_write('D',int(rads[3])) # wrist Y
 
     def re_connect(self):
         self.contr.get_service()
 
 if __name__ == '__main__':
     arm = Arm()
-    
+    while True:
+        time.sleep(0.1)
+        arm.goto(-50,100,100)
+        time.sleep(0.1)
+        arm.goto(0,100,100)
+        time.sleep(0.1)
+        arm.goto(50,100,100)
+        time.sleep(0.1)
+        arm.goto(0,100,100)
