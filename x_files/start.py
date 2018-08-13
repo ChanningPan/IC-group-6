@@ -46,8 +46,17 @@ class Arm(object):
         self.contr.get_service()
 
     def pix_to_real(self,x,y,z):
-        '''130mm <-> 264pix'''
+        '''130mm <-> 264pix  &  (95,170,-100)'''
 
+        arm_coor_o_x = 95
+        arm_coor_o_y = 170
+        arm_coor_o_z = -100
+        
+        arm_coor_x = x/-2 + arm_coor_o_x
+        arm_coor_y = y/2 + arm_coor_o_y
+        arm_coor_z = z/2 + arm_coor_o_z
+
+        return arm_coor_o_x,arm_coor_o_y,arm_coor_o_z
         pass
 
     def recv_data(self,x,y,z = 100, is_pixel = True): 
