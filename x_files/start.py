@@ -23,7 +23,7 @@ class Arm(object):
         pipe_out = usb_pipe.read()
         pipe_out = pipe_out.split('\n')
 
-        self.arm_model = simple_arm.Arm(130, 130)
+        self.arm_model = simple_arm.Arm(130, 260)
         self.contr = ble_module.ble_controller()
 
         self.pix_x = 0
@@ -45,10 +45,15 @@ class Arm(object):
         # 连接蓝牙
         self.contr.get_service()
 
-    def pix_to_real(self):
+    def pix_to_real(self,x,y,z):
+        '''130mm <-> 264pix'''
+
         pass
 
     def recv_data(self,x,y,z = 100, is_pixel = True): 
+        if is_pixel:
+            x,y,z = self.pix_to_real(x,y,z)
+        self.goto(x,y,z)
         pass
 
 def main(arm):
@@ -56,16 +61,19 @@ def main(arm):
     sk.bind(('192.168.43.21',6666))
     sk.listen(5)
     print('Waitttting for mac connection ... ...')
-    ip,port =  sk.accept()
+    con,addr =  sk.accept()
     print('connection established')
     while True:
-        msg = sk.recv(2048)
+        msg = con.recv(2048)
+        if msg == b'':
+            con.close()
+            print()
+            main()
         coor = (msg.decode('utf8')).split('::')
         x = int(coor[0])
         y = int(coor[1])
-        z = int(coor[2])
-        print('recv value of ',x,y,z)
-        arm.recv_data(x,y,z,False)
+        print('recv value of ',x,y)
+        arm.recv_data(x,y,False)
 
 if __name__ == '__main__':
     arm = Arm()
