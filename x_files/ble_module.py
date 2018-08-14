@@ -207,7 +207,8 @@ class ble_controller(object):
                 print('servo %s values %d' % (key, data))
 
     def dis_connect(self):
-        self.ble_conn.disconnect()
+        if self.ble_conn:
+            self.ble_conn.disconnect()
         return True
 
     @staticmethod
