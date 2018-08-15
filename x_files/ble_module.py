@@ -146,8 +146,9 @@ class ble_controller(object):
             print('Got no characteristic with given uuid, EXIT')
             return False
         
-        self.charac_write('C',90)
+        self.charac_write('C',180)
         self.charac_write('E',90)
+        self.charac_write('D',130)
 
         print('------------Summary-----------')
         print('Find service and characteristcs succeed')

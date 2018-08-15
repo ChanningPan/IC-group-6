@@ -70,7 +70,10 @@ class Arm(object):
     def recv_data(self,x,y,z = 100, is_pixel = True, is_craw = False): 
         res = None
         if is_pixel:
-            x,y,z = self.pix_to_real(x,y,z)
+            if is_craw:
+                x,y,z = self.pix_to_real(x,y-30,z)
+            else:
+                x,y,z = self.pix_to_real(x,y,z)
         self.goto(int(x),int(y),int(z))
         if is_craw:
             self.start_craw()
@@ -78,11 +81,19 @@ class Arm(object):
 
     def start_craw(self):
         # 初始状态张开
+
+        time.sleep(1)
+        self.contr.charac_write('D',90)
         time.sleep(1)
         if self.working_craw:
-            self.contr.charac_write('G',50)
+            self.contr.charac_write('G',70)
+        time.sleep(1)
+        self.contr.charac_write('D',130)
+        time.sleep(1)
+        self.goto(0,200,100)
         time.sleep(1)
         pass
+
 
     def listen_socket(self,sk:socket.socket):
         '''副线程接受sk消息并解码'''
@@ -112,19 +123,22 @@ class Arm(object):
             if self.is_new_msg:
                 self.is_new_msg = False
                 return self.msg
+            
+            time.sleep(0.001)
         
         return False
 
     def thread_exit(self,a,b):
         print(colored('threading all over','red'))
+        self.contr.charac_write('G',0)
         self.contr.dis_connect()
         self.sk.close()
         self.all_over = True
 
 
 def main(arm):
-    # local_addr = ('192.168.43.21',6666)
-    local_addr = ('127.0.0.1',6666)
+    local_addr = ('192.168.43.21',6666)
+    # local_addr = ('127.0.0.1',6666)
     sk = socket.socket()
     sk.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sk.bind(local_addr)
@@ -146,14 +160,14 @@ def main(arm):
                 y = int(coor[1])
                 print(colored('-----------------------------','yellow'))
                 print(colored('NOW processing OBJECT position of (%d,%d)'%(x,y),'yellow'))
-                arm.recv_data(x,y,0,is_pixel=True,is_craw=True)
+                arm.recv_data(x,y,-50,is_pixel=True,is_craw=True)
                 print(colored('-------PROCESSING over-------','yellow'))
             elif '::' in msg:
                 coor = msg.split('::')
                 x = int(coor[0])
                 y = int(coor[1])
                 print(colored('-----------------------------','yellow'))
-                print(colored('NOW processing OBJECT position of (%d,%d)'%(x,y),'yellow'))
+                print(colored('NOW processing HAND position of (%d,%d)'%(x,y),'yellow'))
                 arm.recv_data(x,y,is_pixel= True)
                 print(colored('-------PROCESSING over-------','yellow'))
             else:
@@ -165,6 +179,6 @@ def main(arm):
             continue
 
 if __name__ == '__main__':
-    arm = Arm()
-    # arm.connect()
+    arm = Arm(working_craw=True)
+    arm.connect()
     main(arm)
